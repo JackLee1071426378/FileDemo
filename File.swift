@@ -226,6 +226,45 @@ class File
     }
     
     /**
+     Delete self(if it was a directory)'s child file with name.
+     
+     - Parameters:
+        - childName: File or directory name under its parent directory.
+        - hasWildcard: File name with wildcard(*, ? or #) or not.
+     
+     - Returns: Returns *true* if a file at the specified path exists and it is a directory, or *false* if the file does not exist or its existence could not be determined or it is not a directory.
+     */
+    func delete(childName : String, hasWildcard : Bool) throws -> Bool
+    {
+        if isDirectory()
+        {
+            if hasWildcard
+            {
+                let fileList = try list()
+                let deleteList = Wildcard.contains(cmdStr: childName, list: fileList)
+                for item in deleteList
+                {
+                    try append(childName: item).delete()
+                }
+            } else {
+                try append(childName: childName).delete()
+            }
+            return true
+        } else
+        {
+            return false
+        }
+    }
+    
+    /**
+     Delete file self.
+     */
+    func delete() throws {
+        try manager.removeItem(atPath: path)
+    }
+    
+    
+    /**
      Format any Unix path to a proper way flexibly.
      
      - Parameters:
@@ -275,11 +314,6 @@ class File
         {
             p = "/" + p
         }
-        //var separatedPath = p.split(separator: "/")
-        //separatedPath.insert("/", at: 0)
-        //print(separatedPath)
-     
-        
         return p
     }
     

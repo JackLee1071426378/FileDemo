@@ -74,6 +74,7 @@ extension String
 }
 class Wildcard
 {
+    static var showLog = false
     /**
      Compare a *String* instance with wildcards to any string.
      
@@ -126,7 +127,7 @@ class Wildcard
             var isSame = false
             if cmdStr.count != str.count
             {
-                //print("\"\(cmdStr)\" <with> \"\(str)\" Compared! -> \(isSame)")
+                if showLog { print("\"\(cmdStr)\" <with> \"\(str)\" Compared! -> \(isSame)") }
                 return false
             }
             isSame = true
@@ -135,7 +136,7 @@ class Wildcard
                 isSame = isTheSame(cmdChar: Character(cmdStr.sub(startIndex: i, length: 1)), targetChar: Character(str.sub(startIndex: i, length: 1)))
                 if !isSame { break }
             }
-            //print("\"\(cmdStr)\" <with> \"\(str)\" Compared! -> \(isSame)")
+            if showLog { print("\"\(cmdStr)\" <with> \"\(str)\" Compared! -> \(isSame)") }
             return isSame
         }
         
@@ -153,14 +154,14 @@ class Wildcard
                     }
                 }
             }
-            //print("-----------------------\nOrgin fragments = \(fragments)")
+            if showLog { print("-----------------------\nOrgin fragments = \(fragments)") }
             // fragments.count must >= 2
             
             let prefix = fragments[0]
             let suffix = fragments[fragments.count - 1]
             
             // Judge whether the suffix is the same
-            if compare(cmdStr: suffix, str: str.sub(startIndex: str.count - suffix.count, length: suffix.count))
+            if str.count >= suffix.count && compare(cmdStr: suffix, str: str.sub(startIndex: str.count - suffix.count, length: suffix.count))
             {
                 // Cut
                 str = String(str.prefix(str.count - fragments[fragments.count - 1].count))
@@ -168,12 +169,11 @@ class Wildcard
                 fragments.remove(at: fragments.count - 1)
             } else
             {
-                //print("Abort - Suffix wrong!")
-                // Wrong!
+                if showLog { print("Abort - Suffix wrong!") }
                 return false
             }
             // Judge whether the prefix is the same
-            if compare(cmdStr: prefix, str: str.sub(startIndex: 0, length: prefix.count))
+            if str.count >= prefix.count && compare(cmdStr: prefix, str: str.sub(startIndex: 0, length: prefix.count))
             {
                 // Cut
                 str = String(str.suffix(str.count - fragments[0].count))
@@ -181,12 +181,11 @@ class Wildcard
                 fragments.remove(at: 0)
             } else
             {
-                //print("Abort - Prefix wrong!")
-                // Wrong!
+                if showLog { print("Abort - Prefix wrong!") }
                 return false
             }
-            //print("Cut   fragments = \(fragments)")
-            //print("Cut   str = \(String.init(repeating: " ", count: prefix.count))\"\(str)\"\nOrgin str = \"\(str_o)\"")
+            if showLog { print("Cut   fragments = \(fragments)")
+                print("Cut   str = \(String.init(repeating: " ", count: prefix.count))\"\(str)\"\nOrgin str = \"\(name)\"") }
             let index = 0
             var startIndex = 0
             var endIndex = 0
@@ -209,15 +208,15 @@ class Wildcard
             }
             if fragments.count == 0
             {
+                if showLog { print("\"\(name)\" Added!") }
                 return true
-                //print("\"\(str_o)\" Added!")
             }
         } else
         {
             if compare(cmdStr: cmdStr, str: name)
             {
+                if showLog { print("\"\(name)\" Added!") }
                 return true
-                //print("\"\(str_o)\" Added!")
             }
         }
         return false
