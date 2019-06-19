@@ -23,12 +23,39 @@
 import Foundation
 
 let myFile = File(path: "~/")
-print(myFile.path)
-print(myFile.getParentFile().path)
-print(try myFile.append(childName: "desktop").list())
 
-// Create dirs.
-/*let dir = File(path: "~/tmpp")
+print(myFile.path)
+print(myFile.url)
+
+print(myFile.isExsits())
+print(myFile.isDirectory())
+
+let child = myFile.append(childName: "Music")
+
+print(try child.list())
+
+print(myFile.getParentPath())
+print(myFile.getParentFile().path)
+print(myFile.getParentName())
+print(myFile.getParentFile().getName())
+
+let wirteFile = File(path: "~/mTest.plist")
+try wirteFile.write(with: ["myString":"hello"])
+
+let tmp = File(path: "~/tmpp/tmp")
+let _ = try tmp.createDirectory(withIntermediateDirectories: true, attributes: nil) // Create
+let tmpp = tmp.getParentFile() // Get ~/tmp
+print(tmpp.path)
+print(try tmpp.list()) // Prints "["tmp"]".
+print("Deleting...")
+let _ = try tmpp.delete(childName: "tmp", hasWildcard: false) // Delete it.
+print(try tmpp.list()) // Prints "[]".
+try tmpp.delete() // Delete ~/tmpp
+
+// Another Example: (With wildcard.)
+/*
+// Create directories.
+let dir = File(path: "~/tmpp")
 let _ = try dir.createDirectory(withIntermediateDirectories: true, attributes: nil)
 for i in 0..<5
 {
@@ -39,8 +66,10 @@ for i in 5...10
     let _ = try dir.append(childName: "\(i)").createDirectory(withIntermediateDirectories: true, attributes: nil)
 }
 print(try dir.list())
+// Delete tmp_ directories.
 //let _ = try dir.delete(childName: "tmp_*", hasWildcard: true)
-print(try dir.list())*/
+print(try dir.list())
+*/
 
 let f = File(path: "~/..")
 print(f.path)

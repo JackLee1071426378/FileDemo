@@ -217,7 +217,7 @@ class File
             let parentDir = getParentFile()
             if parentDir.isDirectory()
             {
-                return try manager.contentsOfDirectory(atPath: parentDir.getParentPath())
+                return try manager.contentsOfDirectory(atPath: parentDir.path)
             } else
             {
                 throw NSError(domain: "Parent directory no found!", code: NSNotFound, userInfo: nil)
