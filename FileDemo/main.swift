@@ -27,7 +27,8 @@ print(myFile.path)
 print(myFile.getParentFile().path)
 print(try myFile.append(childName: "desktop").list())
 
-let dir = File(path: "~/tmpp")
+// Create dirs.
+/*let dir = File(path: "~/tmpp")
 let _ = try dir.createDirectory(withIntermediateDirectories: true, attributes: nil)
 for i in 0..<5
 {
@@ -39,4 +40,8 @@ for i in 5...10
 }
 print(try dir.list())
 //let _ = try dir.delete(childName: "tmp_*", hasWildcard: true)
-print(try dir.list())
+print(try dir.list())*/
+
+let f = File(path: "~/..")
+print(f.path)
+

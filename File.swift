@@ -283,6 +283,9 @@ class File
         if p.starts(with: "/")
         {
             p = String(p.suffix(p.count - 1))
+        } else
+        {
+            p = FileManager.default.currentDirectoryPath + "/" + str
         }
         // Remove repetition
         var separatedStr = File.separate(p)
@@ -314,9 +317,56 @@ class File
         {
             p = "/" + p
         }
+        p = simplifyPath(path: p)
         return p
     }
     
+    /**
+     Simplify relative path to absolute path.
+     
+     - Parameters:
+        - path: Any Unix path.
+     
+     - Returns: Absolute path.
+     */
+    private static func simplifyPath(path : String) -> String
+    {
+        let u = URL(fileURLWithPath: path)
+        var dirs = u.pathComponents
+        var i = 0
+        var count = dirs.count
+        while i < count
+        {
+            if dirs[i].elementsEqual(".") || dirs[i].elementsEqual("..")
+            {
+                if dirs[i].elementsEqual("..") && i >= 2
+                {
+                    dirs.remove(at: i - 1)
+                    i -= 1
+                    count -= 1
+                }
+                dirs.remove(at: i)
+                count -= 1
+            } else { i += 1 }
+        }
+        dirs.remove(at: 0)
+        var p = ""
+        for d in dirs
+        {
+            p.append("/\(d)")
+        }
+        return p
+    }
+    
+    
+    /**
+     Separate *String* instance into *[Character]*.
+     
+     - Parameters:
+        - str: Any *String* instance.
+     
+     - Returns: Separated *String* instance with *[Character]*.
+     */
     private static func separate(_ str : String) -> [Character]
     {
         var separatedStr = [Character]()
