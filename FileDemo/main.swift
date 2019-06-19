@@ -39,8 +39,11 @@ print(myFile.getParentFile().path)
 print(myFile.getParentName())
 print(myFile.getParentFile().getName())
 
-let wirteFile = File(path: "~/mTest.plist")
-try wirteFile.write(with: ["myString":"hello"])
+let writeFile = File(path: "~/mTest.plist")
+try (["myString":"hello"] as NSDictionary).write(to: writeFile)
+
+print(NSDictionary(contentsOfFile: writeFile) ?? "nothing")
+print(NSDictionary(contentsOfFile: writeFile.getParentFile().append(childName: "nothing.plist")) ?? "nothing")
 
 let tmp = File(path: "~/tmpp/tmp")
 let _ = try tmp.createDirectory(withIntermediateDirectories: true, attributes: nil) // Create

@@ -192,17 +192,6 @@ class File
     }
     
     /**
-     Write NSDictionary to the plist file.
-     
-     - Parameters:
-        - with : Instance of NSDictionary.
-     */
-    func write(with : NSDictionary) throws
-    {
-        try with.write(to: url)
-    }
-    
-    /**
      List the contents of a directory or a file's parent directory's contents.
      
      - Returns: Contents of a *File(Directory)* instance.
@@ -375,5 +364,29 @@ class File
             separatedStr.append(c)
         }
         return separatedStr
+    }
+}
+
+extension NSDictionary
+{
+    /**
+     Read a plist file to a NSDictionary.
+     
+     - Parameters:
+        - file: The *File* which to raed to a dictionary.
+     */
+    convenience init?(contentsOfFile file : File) {
+        self.init(contentsOf: file.url)
+    }
+    
+    /**
+     Write NSDictionary to the plist file.
+     
+     - Parameters:
+        - file: The *File* which to write the dictionary.
+     */
+    func write(to file : File) throws
+    {
+        try self.write(to: file.url)
     }
 }

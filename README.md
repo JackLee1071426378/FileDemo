@@ -45,10 +45,14 @@ Create directories (as same as FileManager.createDirectory):
 let dir = File(path: "~/tmpp")
 let _ = try dir.createDirectory(withIntermediateDirectories: true, attributes: nil)
 ```
-Write into a file: (Only plist file.)
+Write into a plist file: 
 ```
-let wirteFile = File(path: "~/mTest.plist")
-try wirteFile.write(with: ["myString":"hello"])
+let writeFile = File(path: "~/mTest.plist")
+try (["myString":"hello"] as NSDictionary).write(to: writeFile)
+```
+Read from a plist file: 
+```
+NSDictionary(contentsOfFile: writeFile) // -> NSDictionary?
 ```
 Delete a file: 
 ```
