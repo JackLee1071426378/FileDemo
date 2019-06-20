@@ -55,6 +55,17 @@ let _ = try tmpp.delete(childName: "tmp", hasWildcard: false) // Delete it.
 print(try tmpp.list()) // Prints "[]".
 try tmpp.delete() // Delete ~/tmpp
 
+let ttmp = File(path: "~/ttmp")
+let _ = try ttmp.createDirectory(withIntermediateDirectories: true, attributes: nil) // Create tmp directory.
+let dictPlist = ttmp.append(childName: "a.plist")
+let dict : NSDictionary = ["aaa" : "vvv"]
+try dict.write(to: dictPlist) // Create a test plist file called a.plist.
+try dictPlist.rename(to: "b.plist") // Change its name to b.plist
+
+let ttmpp = ttmp.append(childName: "child")
+let _ = try ttmpp.createDirectory(withIntermediateDirectories: true, attributes: nil) // Create a destiny directory for moving.
+try dictPlist.move(toDir: ttmpp) // Start moving.
+
 // Another Example: (With wildcard.)
 /*
 // Create directories.
@@ -76,4 +87,3 @@ print(try dir.list())
 
 let f = File(path: "~/..")
 print(f.path)
-
