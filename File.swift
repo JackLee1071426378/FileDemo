@@ -448,7 +448,7 @@ class File
 extension NSDictionary
 {
     /**
-     Read a plist file to a NSDictionary.
+     Read a plist file to an NSDictionary.
      
      - Parameters:
         - file: The *File* which to raed to a dictionary.
@@ -462,6 +462,30 @@ extension NSDictionary
      
      - Parameters:
         - file: The *File* which to write the dictionary.
+     */
+    func write(to file : File) throws
+    {
+        try self.write(to: file.url)
+    }
+}
+
+extension NSArray
+{
+    /**
+     Read a plist file to an NSArray.
+     
+     - Parameters:
+        - file: The *File* which to raed to an array.
+     */
+    convenience init?(contentsOfFile file : File) {
+        self.init(contentsOf: file.url)
+    }
+    
+    /**
+     Write NSArray to the plist file.
+     
+     - Parameters:
+        - file: The *File* which to write the array.
      */
     func write(to file : File) throws
     {

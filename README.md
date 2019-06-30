@@ -49,10 +49,12 @@ Write into a plist file:
 ```Swift
 let writeFile = File(path: "~/mTest.plist")
 try (["myString":"hello"] as NSDictionary).write(to: writeFile)
+// NSArray was also support.
 ```
 Read from a plist file: 
 ```Swift
 NSDictionary(contentsOfFile: writeFile) // -> NSDictionary?
+// NSArray was also support.
 ```
 Delete a file: 
 ```Swift
