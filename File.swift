@@ -332,6 +332,26 @@ class File
     }
     
     /**
+     Get writing *FileHandle?* instance.
+     
+     - Returns: *FileHandle?* instance.
+     */
+    func getWritingHandle() -> FileHandle?
+    {
+        return FileHandle(forWritingAtPath: path)
+    }
+    
+    /**
+     Get reading *FileHandle?* instance.
+     
+     - Returns: *FileHandle?* instance.
+     */
+    func getReadingHandle() -> FileHandle?
+    {
+        return FileHandle(forReadingAtPath: path)
+    }
+    
+    /**
      Format any Unix path to a proper way flexibly.
      
      - Parameters:
