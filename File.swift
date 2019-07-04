@@ -187,7 +187,7 @@ class File
     {
         if isExsits()
         {
-            return false
+            return true
         }
         try manager.createDirectory(atPath: path, withIntermediateDirectories: withIntermediateDirectories, attributes: attributes)
         if isExsits()
@@ -329,6 +329,62 @@ class File
     func rename(to name : String) throws
     {
         try move(getParentFile().append(childName: name))
+    }
+    
+    /**
+     Creates a empty file.
+     
+     If you specify nil for the attributes parameter, this method uses a default set of values for the owner, group, and permissions of any newly created directories in the path. Similarly, if you omit a specific attribute, the default value is used. The default values for newly created files are as follows:
+     * Permissions are set according to the umask of the current process. For more information, see umask.
+     * The owner ID is set to the effective user ID of the process.
+     * The group ID is set to that of the parent directory.
+     If a file already exists at path, this method overwrites the contents of that file if the current process has the appropriate privileges to do so.
+     
+     - Returns: A file whether create successfully.
+     */
+    
+    func create() -> Bool
+    {
+        if isExsits()
+        {
+            return true
+        }
+        manager.createFile(atPath: path, contents: nil, attributes: nil)
+        if isExsits()
+        {
+            return true
+        }
+        return false
+    }
+    
+    /**
+     Creates a file with the specified content and attributes at the given location.
+     
+     If you specify nil for the attributes parameter, this method uses a default set of values for the owner, group, and permissions of any newly created directories in the path. Similarly, if you omit a specific attribute, the default value is used. The default values for newly created files are as follows:
+     * Permissions are set according to the umask of the current process. For more information, see umask.
+     * The owner ID is set to the effective user ID of the process.
+     * The group ID is set to that of the parent directory.
+     If a file already exists at path, this method overwrites the contents of that file if the current process has the appropriate privileges to do so.
+     
+     - Parameters:
+        - contents: A data object containing the contents of the new file.
+        - attributes: A dictionary containing the attributes to associate with the new file. You can use these attributes to set the owner and group numbers, file permissions, and modification date. For a list of keys, see FileAttributeKey. If you specify nil for attributes, the file is created with a set of default attributes.
+     
+     - Returns: A file whether create successfully.
+     */
+    
+    func create(withData contents : Data?, attributes : [FileAttributeKey : Any]?) -> Bool
+    {
+        if isExsits()
+        {
+            return false
+        }
+        manager.createFile(atPath: path, contents: contents, attributes: attributes)
+        if isExsits()
+        {
+            return true
+        }
+        return false
     }
     
     /**
