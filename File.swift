@@ -24,8 +24,10 @@ import Foundation
 
 enum FileError : Error {
     case FileNotFound
+    case FileCanNotOpen
     case FileAlreadyExists
     case TargetDirectoryNotFound
+    case DataNil
 }
 
 class File
@@ -392,6 +394,7 @@ class File
      
      - Returns: *FileHandle?* instance.
      */
+    
     func getWritingHandle() -> FileHandle?
     {
         return FileHandle(forWritingAtPath: path)
@@ -402,9 +405,49 @@ class File
      
      - Returns: *FileHandle?* instance.
      */
+    
     func getReadingHandle() -> FileHandle?
     {
         return FileHandle(forReadingAtPath: path)
+    }
+    
+    /**
+     Equals to **create(withData: Data, attributes: [FileAttributeKey : Any]?) -> Bool**.
+     
+     - Parameters:
+        - data: A data object containing the contents of the file.
+     */
+    
+    func write(data : Data?)
+    {
+        let _ = create(withData: data, attributes: nil)
+    }
+    
+    /**
+     Write data append to a file.
+     
+     - Parameters:
+        - data: A data object which you want to append to file.
+     */
+    
+    func writeAppend(data : Data?) throws {
+        if data != nil
+        {
+            if !isExsits()
+            {
+                throw FileError.FileNotFound
+            }
+            if let handle = getWritingHandle()
+            {
+                handle.seekToEndOfFile()
+                handle.write(data!)
+                handle.closeFile()
+            } else {
+                throw FileError.FileCanNotOpen
+            }
+        } else {
+            throw FileError.DataNil
+        }
     }
     
     /**
@@ -415,6 +458,7 @@ class File
      
      - Returns: Formated path.
      */
+    
     static func formatPath(_ str : String) -> String
     {
         var p = str
