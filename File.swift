@@ -336,12 +336,6 @@ class File
     /**
      Creates a empty file.
      
-     If you specify nil for the attributes parameter, this method uses a default set of values for the owner, group, and permissions of any newly created directories in the path. Similarly, if you omit a specific attribute, the default value is used. The default values for newly created files are as follows:
-     * Permissions are set according to the umask of the current process. For more information, see umask.
-     * The owner ID is set to the effective user ID of the process.
-     * The group ID is set to that of the parent directory.
-     If a file already exists at path, this method overwrites the contents of that file if the current process has the appropriate privileges to do so.
-     
      - Returns: A file whether create successfully.
      */
     
@@ -412,15 +406,21 @@ class File
     }
     
     /**
-     Equals to **create(withData: Data, attributes: [FileAttributeKey : Any]?) -> Bool**.
+     Write data to a file.
      
      - Parameters:
         - data: A data object containing the contents of the file.
      */
     
-    func write(data : Data?)
+    func write(data : Data?) throws
     {
-        let _ = create(withData: data, attributes: nil)
+        if isExsits() {
+            manager.createFile(atPath: path, contents: data, attributes: nil)
+        } else
+        {
+            throw FileError.FileNotFound
+        }
+        
     }
     
     /**
